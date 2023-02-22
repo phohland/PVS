@@ -7,6 +7,50 @@ conflict_prefer("filter", "dplyr")
 
 library(RELSA)
 
+# Sourcing ----------------------------------------------------------------
+source("R/hrelsa_analysis.R")
+source("R/hrelsa_baselines.R")
+source("R/hrelsa_days.R")
+source("R/hrelsa_final.R")
+source("R/hrelsa_format.R")
+source("R/hrelsa_levels.R")
+source("R/hrelsa_norm.R")
+source("R/hrelsa_plot.R")
+source("R/hrelsa.R")
+
+# Wrapper -----------------------------------------------------------------
+
+hRELSA <- relsa_wrapper(
+    # input file
+  data_path = "data/txdata.csv",
+  data_seperation = ",",
+  data_decimal = ".",
+  data_sheet = NULL,
+  
+  # data formation
+  id = "id",
+  treatment = "tx",
+  condition = "sex",
+  day = NULL,
+  form_to_day = "exam_date",
+  day_format = "%d%b%Y",
+  new_day_one = TRUE,
+  vars = c("sds_w", "sds_h", "sds_bmi", "sds_waist", "sds_wh_r", "sbp_sds", "dbp_sds"),
+  turnvars = NULL,
+  zvars = c("sds_w", "sds_h", "sds_bmi", "sds_waist", "sds_wh_r", "sbp_sds", "dbp_sds"),
+  dropvars = NULL,
+  
+  # normalization
+  norm_ontime = 1,
+  baseline_day = 1,
+  
+  # levels
+  levels = TRUE,
+  k = 4,
+  plot_instead_of_scree = FALSE
+  
+)
+
 # Data Setup ----------------------------------------------------------
 
 rawli <- read.csv("data/litx.csv", sep = ";", header = TRUE, dec = ".")

@@ -17,7 +17,6 @@
 
 hrelsa_days <- function (raw,
                          format = "day",
-                         date_format = "%d%b%Y",
                          formthis = NULL,
                          newdayone = TRUE) {
   # Searching for errors ----------------------------------------------------
@@ -52,10 +51,6 @@ hrelsa_days <- function (raw,
   if (abort) {
     
   } else {
-    col_id <- which(names(raw) == formthis)
-    raw[col_id] <- as.Date(unlist(raw[col_id], use.names = FALSE), date_format)
-    
-    
     if (newdayone) {
       n <- unique(raw$id)
       col <- which(names(raw) == formthis)

@@ -23,13 +23,26 @@ relsa_wrapper <- function(
   id = NULL,
   treatment = NULL,
   condition = NULL,
+  
   day = NULL,
   form_to_day = NULL,
+  day_format = NULL,
   new_day_one = NULL,
+  
   vars = NULL,
   turnvars = NULL,
   zvars = NULL,
   dropvars = NULL,
+  
+  # normalization
+  norm_ontime = 1,
+  baseline_day = 1,
+  
+  # levels
+  levels = FALSE,
+  k = NULL,
+  plot_instead_of_scree = TRUE
+  
   ){
   
   # Searching for errors ----------------------------------------------------
@@ -88,22 +101,28 @@ relsa_wrapper <- function(
             The hRELSA was not calculated.")
     abort <- TRUE
   }
+  if (is.null(vars)) {
+    warning("There were no variable column names found. Please insert your variable column names
+            in the following way: vars = c('var1','var2').
+            The hRELSA was not calculated.")
+    abort <- TRUE
+  }
   
   
   # Warnings leading to no abort
-  if (is.null(data_seperation)) {
-    data_seperation <- ";"
+  if (is.null(data_seperation) && data_ending == "csv") {
+    data_seperation <- ","
     cat("While processing the inserted csv file the assumption that the data is
-        seperated with a ';' has been made.
+        seperated with a ',' has been made.
         If the file is not seperated that way, please use: data_seperation = ''.")
   }
-  if (is.null(data_decimal)) {
+  if (is.null(data_decimal) && data_ending == "csv") {
     data_decimal <- "."
     cat("While processing the inserted csv file the assumption that the data 
         decimal seperation is '.' has been made.
         If the decimal seperation is not that way, please use: data_decimal = '.'")
   }
-  if (is.null(data_sheet)) {
+  if (is.null(data_sheet) && data_ending %in% c("xls", "xlsx")) {
     data_sheet <- 1
     cat("While processing the inserted excel file the assumption that the data 
         is in sheet 1 has been made.
@@ -122,6 +141,18 @@ relsa_wrapper <- function(
         If only one day one at the earliest time point of the data set is wished, 
         please use: new_day_one = FALSE")
   }
+  if (is.null(day_format) && !(is.null(form_to_day))) {
+    day_format <- "%d%b%Y"
+    cat("While processing the inserted time column the assumption that the date
+        format is %d%b%Y has been made. If the format is otherwise, 
+        please use: day_format = ''")
+  }
+  if (is.null(k) && !(is.null(levels))) {
+    k <- 4
+    cat("You want the levels to be given out as well and did not stated the amount
+        of the k levels. While processing the levels k = 4 was used.
+        If wished otherwise, please use e.g.: k = 5")
+  }
   
   
   # Function code -----------------------------------------------------------
@@ -131,17 +162,53 @@ relsa_wrapper <- function(
   } else {
     
   if (data_ending == "csv") {
-    raw <- read.csv(data_path, sep = data_seperation, header = TRUE, dec = data_decimal) 
+    raw <- read.csv(data_path, sep = data_seperation, header = TRUE, dec = data_decimal, row.names = NULL) 
   } else if (data_ending == "xlsx" || data_ending == "xls") {
     raw <- read_excel(data_path, sheet = data_sheet) 
   }
   
   raw <- as_tibble(raw)
   raw <- raw %>% clean_names
+  col_id <- which(names(raw) == id)
+  colnames(raw)[col_id] <- "id"
+  
   
   if (is.null(day)) {
-    raw <- hrelsa_days(raw, format = "day", formthis = form_to_day, newdayone = new_day_one)
+    raw <- hrelsa_days(raw, format = "day", date_format = day_format, formthis = form_to_day, newdayone = new_day_one)
+    day <- "day"
   }
+  
+  dat <- hrelsa_format(raw, id = id, treatment = treatment, condition = condition, day = day, vars = vars)
+  
+  pre <- hrelsa_norm(dat, normthese = vars, zvars = zvars, ontime = norm_ontime)
+  
+  bsl <- hrelsa_baselines(pre, bslday = baseline_day, vars = vars, zvars = zvars, turnvars = turnvars)
+  
+  final <- hrelsa_final(pre, bsl, drop = dropvars, turnvars = turnvars, zvars = zvars)
+  
+  analysis <- hrelsa_analysis(final)
+  
+  if (levels) {
+    if (plot_instead_of_scree) {
+      levels_df <- hrelsa_levels(pre, bsl = bsl, drops = dropvars, turns = turnvars,
+                                  zvars = zvars,  k = k, showScree = FALSE, showPlot = TRUE)
+    } else {
+      levels_df <- hrelsa_levels(pre, bsl = bsl, drops = dropvars, turns = turnvars,
+                                   zvars = zvars,  k = k, showScree = TRUE, showPlot = FALSE)
+    }
+  
+ }
+  
+  ret <- list(baseline_informations = bsl,
+              final_hrelsa = final,
+              analysis = analysis)
+  
+  if (levels) {
+    ret <- append(ret, levels_df)
+  }
+  
+  cat("hRELSA calculation finished.")
+  return(ret)
   
   }
 }

@@ -49,8 +49,6 @@ hrelsa_format <-
     } else {
       col_id <- which(names(dat) == id)
       colnames(dat)[col_id] <- "id"
-      dat[col_id] <- as.factor(unlist(dat[col_id], use.names = FALSE))
-      
       
       col_day <- which(names(dat) == day)
       colnames(dat)[col_day] <- "day"
@@ -60,14 +58,12 @@ hrelsa_format <-
         col_treatment <- which(names(dat) == treatment)
         colnames(dat)[col_treatment] <- "treatment"
         cols <- append(cols, "treatment")
-        dat[col_treatment] <- as.factor(unlist(dat[col_treatment], use.names = FALSE))
       }
       
       if (!(is.null(condition))) {
         col_condition <- which(names(dat) == condition)
         colnames(dat)[col_condition] <- "condition"
         cols <- append(cols, "condition")
-        dat[col_condition] <- as.factor(unlist(dat[col_condition], use.names = FALSE))
       }
       cols <- append(cols, "day")
       
