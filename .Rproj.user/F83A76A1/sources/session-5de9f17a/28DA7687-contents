@@ -204,7 +204,7 @@ relsa_wrapper <- function(
               analysis = analysis)
   
   if (levels) {
-    ret <- append(ret, levels_df)
+    ret <- append(ret, list(levels = levels_df))
   }
   
   cat("hRELSA calculation finished.")
