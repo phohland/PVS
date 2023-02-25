@@ -1,11 +1,5 @@
 # Packages ----------------------------------------------------------------
-pacman::p_load(styler, ggplot2,readxl,devtools,tidyverse,janitor,dplyr,lme4, magrittr,
-               broom, conflicted, see, performance, car, parameters, performance, tools)
-
-conflict_prefer("lmer", "lme4")
-conflict_prefer("filter", "dplyr")
-
-library(RELSA)
+pacman::p_load(ggplot2, readxl, devtools, tidyverse,janitor, dplyr, tools)
 
 # Sourcing ----------------------------------------------------------------
 source("R/hrelsa_analysis.R")
@@ -19,6 +13,8 @@ source("R/hrelsa_plot.R")
 source("R/hrelsa.R")
 
 # Wrapper -----------------------------------------------------------------
+
+# whole hRELSA function
 
 hRELSA <- relsa_wrapper(
     # input file
@@ -47,7 +43,7 @@ hRELSA <- relsa_wrapper(
   # levels
   levels = TRUE,
   k = 4,
-  plot_instead_of_scree = TRUE,
+  plot_instead_of_scree = FALSE,
   
   #plot
   which_patient = 43,
@@ -57,63 +53,6 @@ hRELSA <- relsa_wrapper(
 
 plot <- hrelsa_plot(hRELSA$plot$dat, hRELSA$plot$hRELSA, levels = hRELSA$plot$levels, a = hRELSA$plot$a, plotvar = hRELSA$plot$plotvar, plothRELSA = TRUE,
                     myylim = c(-4, 4),  myYlim = c(0, 1), mypch = 1, mycol = "red", myXlab="days")
-
-
-# Data Setup ----------------------------------------------------------
-
-rawli <- read.csv("data/litx.csv", sep = ";", header = TRUE, dec = ".")
-rawli <- as_tibble(rawli)
-rawli$tx <- "liver"
-rawli <- rawli %>%
-  clean_names %>%
-  select("id","tx","sex", "exam_date",
-        "sds_w", "sds_h", "sds_bmi", "sds_waist", "sds_wh_r", "sbp_sds", "dbp_sds")
-
-rawlu <- read.csv("data/lutx.csv", sep = ";", header = TRUE, dec = ".")
-rawlu <- as_tibble(rawlu)
-rawlu$tx <- "lungs"
-rawlu <- rawlu %>%
-  clean_names %>%
-  select("id","tx","sex", "exam_date",
-         "sds_w", "sds_h", "sds_bmi", "sds_waist", "sds_wh_r", "sbp_sds", "dbp_sds")
-
-raw <- rbind(rawli, rawlu)
-
-raw <- raw %>%
-  mutate(
-    id = as.factor(id),
-    sex = factor(sex, levels = c("1", "2"),
-                 labels = c("male", "female")),
-    exam_date = as.Date(exam_date,"%d%b%Y"),
-    tx = as.factor(tx)
-  )
-
-
-# hrelsa_days function to add day column
-raw <- hrelsa_days(raw, format = "day", formthis = "exam_date")
-
-# hRELSA -------------------------------------------------------------------
-
-vars <- c("sds_w", "sds_h", "sds_bmi", "sds_waist", "sds_wh_r", "sbp_sds", "dbp_sds")
-turnvars <- NULL
-zvars <- c("sds_w", "sds_h", "sds_bmi", "sds_waist", "sds_wh_r", "sbp_sds", "dbp_sds")
-dropvars <- NULL
-
-dat <- hrelsa_format(raw, id = "id", treatment = "tx", condition = "sex", day = "day", vars = vars)
-
-pre <- hrelsa_norm(dat, normthese = vars, zvars = zvars, ontime = 1)
-bsl <- hrelsa_baselines(pre, bslday = 1, vars = vars, zvars = zvars, turnvars = turnvars)
-final <- hrelsa_final(pre, bsl, drop = dropvars, turnvars = turnvars, zvars = zvars)
-analysis <- hrelsa_analysis(final)
-
-levels <- hrelsa_levels(pre, bsl = bsl, drops = dropvars, turns = turnvars,
-                        zvars = zvars,  k = 4, showScree = FALSE, showPlot = TRUE)
-
-which_patient <- 43 # 1 to 185 # maxsev has 46 # maxsev per variable have 160, 167, 43, 173, 105, 46, 52
-which_plotvar <- c("sbp_sds")
-hRELSA <-   hrelsa(pre = pre, bsl, a = which_patient, drop = dropvars, turnvars = turnvars, zvars = zvars)
-plot <- hrelsa_plot(dat, hRELSA, levels = levels, a = which_patient, plotvar = which_plotvar, plotRELSA = TRUE,
-                        myylim = c(-4, 4),  myYlim = c(0, 1), mypch = 1, mycol = "red", myXlab="days")
 
 # Plotting ----------------------------------------------------------------
 
