@@ -47,9 +47,17 @@ hRELSA <- relsa_wrapper(
   # levels
   levels = TRUE,
   k = 4,
-  plot_instead_of_scree = FALSE
+  plot_instead_of_scree = TRUE,
+  
+  #plot
+  which_patient = 43,
+  which_var_to_plot = c("sbp_sds")
   
 )
+
+plot <- hrelsa_plot(hRELSA$plot$dat, hRELSA$plot$hRELSA, levels = hRELSA$plot$levels, a = hRELSA$plot$a, plotvar = hRELSA$plot$plotvar, plothRELSA = TRUE,
+                    myylim = c(-4, 4),  myYlim = c(0, 1), mypch = 1, mycol = "red", myXlab="days")
+
 
 # Data Setup ----------------------------------------------------------
 

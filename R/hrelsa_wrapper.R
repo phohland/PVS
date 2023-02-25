@@ -41,7 +41,11 @@ relsa_wrapper <- function(
   # levels
   levels = FALSE,
   k = NULL,
-  plot_instead_of_scree = TRUE
+  plot_instead_of_scree = TRUE,
+  
+  #plot
+  which_patient = NULL,
+  which_var_to_plot = NULL
   
   ){
   
@@ -114,19 +118,19 @@ relsa_wrapper <- function(
     data_seperation <- ","
     cat("While processing the inserted csv file the assumption that the data is
         seperated with a ',' has been made.
-        If the file is not seperated that way, please use: data_seperation = ''.")
+        If the file is not seperated that way, please use: data_seperation = ''.\n")
   }
   if (is.null(data_decimal) && data_ending == "csv") {
     data_decimal <- "."
     cat("While processing the inserted csv file the assumption that the data 
         decimal seperation is '.' has been made.
-        If the decimal seperation is not that way, please use: data_decimal = '.'")
+        If the decimal seperation is not that way, please use: data_decimal = '.'.\n")
   }
   if (is.null(data_sheet) && data_ending %in% c("xls", "xlsx")) {
     data_sheet <- 1
     cat("While processing the inserted excel file the assumption that the data 
         is in sheet 1 has been made.
-        If the data is in another sheet, please use e.g.: data_sheet = 2")
+        If the data is in another sheet, please use e.g.: data_sheet = 2.\n")
   }
   if (!(is.null(day)) && !(is.null(form_to_day))) {
     warning("You can't form a day column if you already have one. Your own day
@@ -139,19 +143,19 @@ relsa_wrapper <- function(
     cat("While processing the inserted time column the assumption that each
         patient should get a new day one at his first time point has been made.
         If only one day one at the earliest time point of the data set is wished, 
-        please use: new_day_one = FALSE")
+        please use: new_day_one = FALSE.\n")
   }
   if (is.null(day_format) && !(is.null(form_to_day))) {
     day_format <- "%d%b%Y"
     cat("While processing the inserted time column the assumption that the date
         format is %d%b%Y has been made. If the format is otherwise, 
-        please use: day_format = ''")
+        please use: day_format = ''.\n")
   }
   if (is.null(k) && !(is.null(levels))) {
     k <- 4
     cat("You want the levels to be given out as well and did not stated the amount
         of the k levels. While processing the levels k = 4 was used.
-        If wished otherwise, please use e.g.: k = 5")
+        If wished otherwise, please use e.g.: k = 5.\n")
   }
   
   
@@ -192,22 +196,35 @@ relsa_wrapper <- function(
     if (plot_instead_of_scree) {
       levels_df <- hrelsa_levels(pre, bsl = bsl, drops = dropvars, turns = turnvars,
                                   zvars = zvars,  k = k, showScree = FALSE, showPlot = TRUE)
+      cat("\nThe plot of the levels will be shown.")
     } else {
       levels_df <- hrelsa_levels(pre, bsl = bsl, drops = dropvars, turns = turnvars,
                                    zvars = zvars,  k = k, showScree = TRUE, showPlot = FALSE)
+      cat("\nThe scree plot of the levels will be shown.")
     }
   
  }
   
   ret <- list(baseline_informations = bsl,
-              final_hrelsa = final,
+              final_hRelsa = final,
               analysis = analysis)
   
   if (levels) {
     ret <- append(ret, list(levels = levels_df))
   }
   
-  cat("hRELSA calculation finished.")
+  if (!(is.null(which_patient)) && levels) {
+    hRELSA <-   hrelsa(pre = pre, bsl, a = which_patient, drop = dropvars, turnvars = turnvars, zvars = zvars)
+    ret <- append(ret, list(plot = list(
+      dat = dat,
+      hRELSA = hRELSA,
+      levels = levels_df,
+      a = which_patient,
+      plotvar = which_var_to_plot
+    )))
+  }
+ 
+  cat("\nhRELSA calculation finished.")
   return(ret)
   
   }
