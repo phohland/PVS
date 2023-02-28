@@ -1,0 +1,10 @@
+Package: hRELSA
+Type: Package
+Title: Relative Severity Assessment Score for Humans (hRELSA)
+Version: 0.1.0
+Author: cand. med. Philipp L. S. Ohland
+Maintainer: The package maintainer <philipp.l.s.ohland@stud.mh-hannover.de>
+Description: A score to assess with given clinical data the process of the disease severity.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true

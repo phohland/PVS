@@ -1,12 +1,12 @@
 #' hRELSA Wrapper
 #'
-#' The \code{hrelsa_wrapper} 
+#' The \code{hrelsa_wrapper}
 #'
-#' @param x 
+#' @param x
 #'
 #' @return \code{robj}
 #'
-#' @import dplyr
+#' @import tidyverse janitor
 #' @export
 #'
 
@@ -18,46 +18,46 @@ relsa_wrapper <- function(
   data_seperation = NULL,
   data_decimal = NULL,
   data_sheet = NULL,
-  
+
     # data formation
   id = NULL,
   treatment = NULL,
   condition = NULL,
-  
+
   day = NULL,
   form_to_day = NULL,
   day_format = NULL,
   new_day_one = NULL,
-  
+
   vars = NULL,
   turnvars = NULL,
   zvars = NULL,
   dropvars = NULL,
-  
+
   # normalization
   norm_ontime = 1,
   baseline_day = 1,
-  
+
   # levels
   levels = FALSE,
   k = NULL,
   plot_instead_of_scree = TRUE,
-  
+
   #plot
   which_patient = NULL,
   which_var_to_plot = NULL
-  
+
   ){
-  
+
   # Searching for errors ----------------------------------------------------
-  
+
   abort <- FALSE
   data_ending <- file_ext(data_path)
   just_one_condition <- FALSE
   if (is.null(treatment) || is.null(condition)) {
     just_one_condition <- TRUE
   }
-  
+
   # Warnings leading to abort
   if (is.null(data_path)) {
     warning("There was no data path found. Please insert your data path including
@@ -71,8 +71,8 @@ relsa_wrapper <- function(
             The hRELSA was not calculated.")
     abort <- TRUE
   }
-  if (!(data_ending %in% c("csv", "xls", "xlsx"))) {
-    warning("The inserted file has no csv-, xls- or xlsx-ending. A file with one
+  if (!(data_ending %in% c("csv", "xls", "xlsx", "txt"))) {
+    warning("The inserted file has no csv-, txt-, xls- or xlsx-ending. A file with one
             of those endings is necessairy.
             The hRELSA was not calculated.")
     abort <- TRUE
@@ -111,24 +111,24 @@ relsa_wrapper <- function(
             The hRELSA was not calculated.")
     abort <- TRUE
   }
-  
-  
+
+
   # Warnings leading to no abort
-  if (is.null(data_seperation) && data_ending == "csv") {
+  if (is.null(data_seperation) && data_ending %in% c("csv", "txt")) {
     data_seperation <- ","
     cat("While processing the inserted csv file the assumption that the data is
         seperated with a ',' has been made.
         If the file is not seperated that way, please use: data_seperation = ''.\n")
   }
-  if (is.null(data_decimal) && data_ending == "csv") {
+  if (is.null(data_decimal) && data_ending %in% c("csv", "txt")) {
     data_decimal <- "."
-    cat("While processing the inserted csv file the assumption that the data 
+    cat("While processing the inserted csv file the assumption that the data
         decimal seperation is '.' has been made.
         If the decimal seperation is not that way, please use: data_decimal = '.'.\n")
   }
   if (is.null(data_sheet) && data_ending %in% c("xls", "xlsx")) {
     data_sheet <- 1
-    cat("While processing the inserted excel file the assumption that the data 
+    cat("While processing the inserted excel file the assumption that the data
         is in sheet 1 has been made.
         If the data is in another sheet, please use e.g.: data_sheet = 2.\n")
   }
@@ -142,13 +142,13 @@ relsa_wrapper <- function(
     new_day_one <- TRUE
     cat("While processing the inserted time column the assumption that each
         patient should get a new day one at his first time point has been made.
-        If only one day one at the earliest time point of the data set is wished, 
+        If only one day one at the earliest time point of the data set is wished,
         please use: new_day_one = FALSE.\n")
   }
   if (is.null(day_format) && !(is.null(form_to_day))) {
     day_format <- "%d%b%Y"
     cat("While processing the inserted time column the assumption that the date
-        format is %d%b%Y has been made. If the format is otherwise, 
+        format is %d%b%Y has been made. If the format is otherwise,
         please use: day_format = ''.\n")
   }
   if (is.null(k) && !(is.null(levels))) {
@@ -157,41 +157,41 @@ relsa_wrapper <- function(
         of the k levels. While processing the levels k = 4 was used.
         If wished otherwise, please use e.g.: k = 5.\n")
   }
-  
-  
+
+
   # Function code -----------------------------------------------------------
-  
+
   if (abort) {
-    
+
   } else {
-    
-  if (data_ending == "csv") {
-    raw <- read.csv(data_path, sep = data_seperation, header = TRUE, dec = data_decimal, row.names = NULL) 
+
+  if (data_ending %in% c("csv", "txt")) {
+    raw <- read.csv(data_path, sep = data_seperation, header = TRUE, dec = data_decimal, row.names = NULL)
   } else if (data_ending == "xlsx" || data_ending == "xls") {
-    raw <- read_excel(data_path, sheet = data_sheet) 
+    raw <- read_excel(data_path, sheet = data_sheet)
   }
-  
+
   raw <- as_tibble(raw)
-  raw <- raw %>% clean_names
+  #raw <- raw %>% clean_names
   col_id <- which(names(raw) == id)
   colnames(raw)[col_id] <- "id"
-  
-  
+
+
   if (is.null(day)) {
     raw <- hrelsa_days(raw, format = "day", date_format = day_format, formthis = form_to_day, newdayone = new_day_one)
     day <- "day"
   }
-  
+
   dat <- hrelsa_format(raw, id = id, treatment = treatment, condition = condition, day = day, vars = vars)
-  
+
   pre <- hrelsa_norm(dat, normthese = vars, zvars = zvars, ontime = norm_ontime)
-  
+
   bsl <- hrelsa_baselines(pre, bslday = baseline_day, vars = vars, zvars = zvars, turnvars = turnvars)
-  
+
   final <- hrelsa_final(pre, bsl, drop = dropvars, turnvars = turnvars, zvars = zvars)
-  
+
   analysis <- hrelsa_analysis(final)
-  
+
   if (levels) {
     if (plot_instead_of_scree) {
       levels_df <- hrelsa_levels(pre, bsl = bsl, drops = dropvars, turns = turnvars,
@@ -202,17 +202,17 @@ relsa_wrapper <- function(
                                    zvars = zvars,  k = k, showScree = TRUE, showPlot = FALSE)
       cat("\nThe scree plot of the levels will be shown.")
     }
-  
+
  }
-  
+
   ret <- list(baseline_informations = bsl,
               final_hRelsa = final,
               analysis = analysis)
-  
+
   if (levels) {
     ret <- append(ret, list(levels = levels_df))
   }
-  
+
   if (!(is.null(which_patient)) && levels) {
     hRELSA <-   hrelsa(pre = pre, bsl, a = which_patient, drop = dropvars, turnvars = turnvars, zvars = zvars)
     ret <- append(ret, list(plot = list(
@@ -223,9 +223,9 @@ relsa_wrapper <- function(
       plotvar = which_var_to_plot
     )))
   }
- 
+
   cat("\nhRELSA calculation finished.")
   return(ret)
-  
+
   }
 }
