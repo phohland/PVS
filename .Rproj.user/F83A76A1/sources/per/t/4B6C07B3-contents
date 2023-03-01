@@ -22,7 +22,7 @@ hRELSA <- relsa_wrapper(
   data_seperation = ",",
   data_decimal = ".",
   data_sheet = NULL,
-  
+
   # data formation
   id = "id",
   treatment = "tx",
@@ -35,23 +35,22 @@ hRELSA <- relsa_wrapper(
   turnvars = NULL,
   zvars = c("sds_w", "sds_h", "sds_bmi", "sds_waist", "sds_wh_r", "sbp_sds", "dbp_sds"),
   dropvars = NULL,
-  
+
   # normalization
-  norm_ontime = 1,
   baseline_day = 1,
-  
+
   # levels
   levels = TRUE,
   k = 4,
   plot_instead_of_scree = FALSE,
-  
+
   #plot
   which_patient = 43,
   which_var_to_plot = c("sbp_sds")
-  
+
 )
 
-plot <- hrelsa_plot(hRELSA$plot$dat, hRELSA$plot$hRELSA, levels = hRELSA$plot$levels, a = hRELSA$plot$a, plotvar = hRELSA$plot$plotvar, plothRELSA = TRUE,
+hrelsa_plot(hRELSA$plot$dat, hRELSA$plot$hRELSA, levels = hRELSA$plot$levels, a = hRELSA$plot$a, plotvar = hRELSA$plot$plotvar, plothRELSA = TRUE,
                     myylim = c(-4, 4),  myYlim = c(0, 1), mypch = 1, mycol = "red", myXlab="days")
 
 # Plotting ----------------------------------------------------------------

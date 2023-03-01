@@ -6,7 +6,7 @@
 #'
 #' @return \code{robj}
 #'
-#' @import tidyverse janitor
+#' @import tidyverse tools
 #' @export
 #'
 
@@ -35,7 +35,6 @@ relsa_wrapper <- function(
   dropvars = NULL,
 
   # normalization
-  norm_ontime = 1,
   baseline_day = 1,
 
   # levels
@@ -184,7 +183,7 @@ relsa_wrapper <- function(
 
   dat <- hrelsa_format(raw, id = id, treatment = treatment, condition = condition, day = day, vars = vars)
 
-  pre <- hrelsa_norm(dat, normthese = vars, zvars = zvars, ontime = norm_ontime)
+  pre <- hrelsa_norm(dat, normthese = vars, zvars = zvars, ontime = baseline_day)
 
   bsl <- hrelsa_baselines(pre, bslday = baseline_day, vars = vars, zvars = zvars, turnvars = turnvars)
 
