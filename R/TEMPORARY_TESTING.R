@@ -1,0 +1,35 @@
+library(hRELSA)
+pacman::p_load(tidyverse, tools)
+
+
+data_path = "R/surgery.txt"
+data_seperation = "\t"
+data_decimal = "."
+data_sheet = NULL
+
+# data formation
+id = "id"
+treatment = "treatment"
+condition = "condition"
+day = "day"
+form_to_day = NULL
+day_format = NULL
+new_day_one = NULL
+vars = c("bwc","burON", "hr", "hrv", "temp", "act")
+turnvars = c("hr", "temp")
+zvars = NULL
+dropvars = NULL
+
+# normalization
+baseline_day = -1
+
+# levels
+levels = TRUE
+k = 4
+plot_instead_of_scree = FALSE
+
+#plot
+which_patient = 13
+which_var_to_plot = c("hr")
+
+
