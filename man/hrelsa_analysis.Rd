@@ -10,7 +10,7 @@ hrelsa_analysis(set)
 \item{final}{hRELSAed data set (by hrelsa_final)}
 }
 \value{
-\code{analysis} Outputs some basic data set informations, and the 
+\code{analysis} Outputs some basic data set informations, and the
 analysis of wfactor, wf and rms
 }
 \description{

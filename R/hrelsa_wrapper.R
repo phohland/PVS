@@ -1,16 +1,7 @@
-#' hRELSA Wrapper
-#'
-#' The \code{hrelsa_wrapper}
-#'
-#' @param x
-#'
-#' @return \code{robj}
-#'
-#' @import tidyverse tools
-#' @export
+#' hRELSA Wrapper is until now not recommended to use!
+#' Please ask the author for application of the hRELSA.
 #'
 
-## normthese = all variables
 
 hrelsa_wrapper <- function(
     # input file
@@ -212,7 +203,7 @@ hrelsa_wrapper <- function(
  }
 
   ret <- list(baseline_informations = bsl,
-              final_hRelsa = final,
+              final_hRelsa = as_tibble(final),
               analysis = analysis)
 
   if (levels) {

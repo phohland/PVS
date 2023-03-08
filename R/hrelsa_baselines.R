@@ -23,7 +23,7 @@ hrelsa_baselines <-
            zvars = NULL,
            turnvars = NULL) {
     # Searching for errors ----------------------------------------------------
-    
+
     abort <- FALSE
     if (is.null(pre)) {
       warning("There was no data set found. The baseline was not calculated.")
@@ -38,7 +38,7 @@ hrelsa_baselines <-
       warn <- FALSE
       for (i in 1:length(turnvars %in% vars)) {
         if ((turnvars %in% vars)[i]) {
-          
+
         } else {
           abort <- TRUE
           warn <- TRUE
@@ -55,7 +55,7 @@ hrelsa_baselines <-
       warn <- FALSE
       for (i in 1:length(zvars %in% vars)) {
         if ((zvars %in% vars)[i]) {
-          
+
         } else {
           abort <- TRUE
           warn <- TRUE
@@ -73,25 +73,25 @@ hrelsa_baselines <-
       )
       abort <- TRUE
     }
-    
+
     # Function code -----------------------------------------------------------
-    
+
     z <- FALSE
     if (length(zvars) == length(vars)) {
       z <- TRUE
     }
-    
+
     if (abort) {
-      
+
     } else {
       # Fetch normalized data of reference group on baseline day
       # (typically everywhere 100%)
       # The baseline of normalized z variables is always 100
       # (without a specific baseline day)
       if (z) {
-        
+
       } else {
-        bl                <- pre[pre$day == bslday, vars]
+        bl                <- pre[pre$time == bslday, vars]
         baseline          <- bl
         if (length(zvars) > 0) {
           for (i in 1:length(zvars)) {
@@ -99,7 +99,7 @@ hrelsa_baselines <-
           }
         }
       }
-      
+
       # Fetch values at highest severity depending on how they turn
       # The highest severity of normalized z variables is
       # he highest delta from 100 no matter which direction
@@ -108,18 +108,18 @@ hrelsa_baselines <-
       } else {
         maxsev <- apply(pre[, vars], 2, min, na.rm = TRUE)
       }
-      
+
       if (length(turnvars) > 0) {
         maxsev[turnvars] <- apply(pre[, turnvars], 2, max, na.rm = TRUE)
       }
-      
+
       if (length(zvars) > 0) {
         maxsev[zvars] <- apply(abs(pre[, zvars]), 2, max, na.rm = TRUE)
       }
-      
+
       # Fetch maximum delta between 100% and highest severity
       maxdelta            <- abs(100 - maxsev)
-      
+
       # Model characteristics
       ristics           <-
         data.frame(
@@ -128,7 +128,7 @@ hrelsa_baselines <-
           conditions = length(unique(pre$condition)),
           variables  = dim(pre[, vars])[2]
         )
-      
+
       # Giving the baseline table, max severity, max delta and
       # the characteristics out
       # For just z variables without baseline table
@@ -145,7 +145,7 @@ hrelsa_baselines <-
             ristics = ristics
           )
       }
-      
+
       cat(
         "The baseline has been calculated with",
         length(vars),
@@ -156,6 +156,6 @@ hrelsa_baselines <-
         "of them are z variables."
       )
       return(ret)
-      
+
     }
   }

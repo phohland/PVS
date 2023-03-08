@@ -13,7 +13,7 @@ hrelsa_days(
 )
 }
 \arguments{
-\item{format}{either "day" or "year" (a transformation to years is possible as well)}
+\item{format}{either "day", "year" or "timecode" (a transformation to years is possible as well)}
 
 \item{formthis}{date variable}
 

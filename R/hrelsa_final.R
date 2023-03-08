@@ -28,7 +28,7 @@ hrelsa_final <-
            zvars = zvars,
            relsaNA = NA) {
     # Searching for errors ----------------------------------------------------
-    
+
     abort <- FALSE
     if (is.null(pre)) {
       warning("There was no data set found. The baseline was not calculated.")
@@ -38,12 +38,12 @@ hrelsa_final <-
       warning("There was no baseline found. The baseline was not calculated.")
       abort <- TRUE
     }
-    
+
     # Function code -----------------------------------------------------------
-    
+
     final <- NULL
     if (abort) {
-      
+
     } else {
       for (i in 1:length(unique(pre$id))) {
         RELSA        <- hrelsa(
@@ -55,10 +55,10 @@ hrelsa_final <-
           zvars = zvars,
           relsaNA = relsaNA
         )$relsa
-        
+
         d1 <- (unique(pre$id))[i]
         d2 <- pre %>% filter(id == d1)
-        
+
         RELSA <- data.frame(
           id = d2$id,
           id2 = i,
@@ -67,8 +67,9 @@ hrelsa_final <-
           RELSA
         )
         final <- rbind(final, RELSA)
+        final <- as_tibble(final)
       }
     }
-    
+
     return(final)
   }

@@ -23,7 +23,7 @@ hrelsa_norm <-
            zvars = NULL,
            ontime = NULL) {
     # Searching for errors ----------------------------------------------------
-    
+
     abort <- FALSE
     if (is.null(set)) {
       warning("There was no data set found. The data set was not normalized.")
@@ -39,15 +39,15 @@ hrelsa_norm <-
               The data set was not normalized.")
       abort <- TRUE
     }
-    
+
     # Function code -----------------------------------------------------------
-    
+
     if (abort) {
-      
+
     } else {
       n   <- unique(set$id)
-      set <- arrange(set, id, day)
-      
+      set <- arrange(set, id, time)
+
       for (j in 1:length(normthese)) {
         norm            <- NULL
         for (i in 1:length(n)) {
@@ -56,55 +56,55 @@ hrelsa_norm <-
             # z_norm = (|z| + 1) * 100
             mymeans       <-
               (abs(set[set$id %in% n[i], normthese[j]]) + 1) * 100
-            
-            myday         <- set[set$id == n[i], "day"]
+
+            mytime         <- set[set$id == n[i], "time"]
             mytier        <- set[set$id == n[i], "id"]
             norm          <-
               rbind(norm,
                     data.frame(
                       id = mytier,
-                      day = myday,
+                      time = mytime,
                       act = mymeans
                     ))
-            
+
           } else {
             # Here happens the normal variable normalization
             mydayone      <- set[set$id == n[i], normthese[j]]
             mydayone[, 1]  <-
               set[set$id == n[i] &
-                    set$day == ontime, normthese[j]]
+                    set$time == ontime, normthese[j]]
             mymeans       <-
               (set[set$id %in% n[i], normthese[j]] / mydayone) * 100
-            
-            myday         <- set[set$id == n[i], "day"]
+
+            mytime         <- set[set$id == n[i], "time"]
             mytier        <- set[set$id == n[i], "id"]
             norm          <-
               rbind(norm,
                     data.frame(
                       id = mytier,
-                      day = myday,
+                      time = mytime,
                       act = mymeans
                     ))
-            
+
             # check if there are multiple entries per id
-            # (e.g., multiple measurements per day)
+            # (e.g., multiple measurements per time)
             n_occur       <- NULL
             n_occur       <-
-              data.frame(table(set[set$id %in% n[i], "day"]))
-            if (sum(n_occur$Freq) > length(n_occur$day)) {
+              data.frame(table(set[set$id %in% n[i], "time"]))
+            if (sum(n_occur$Freq) > length(n_occur$time)) {
               warning(
                 "There are multiple daily entries per id.
                       Normalization probably incorrect."
               )
             }
           }
-          
+
         }
-        
+
         set[, which(names(set) == normthese[j])] <- norm[, 3]
       }
-      
+
     }
-    
+
     return(set)
   }

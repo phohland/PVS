@@ -29,21 +29,21 @@
 
 hrelsa_levels <- function(refset, mypath = NULL, filename=NULL, bsl=bsl, drops=NULL, turns=NULL, zvars=NULL, relsaNA=NA, k=4,
                          showScree=FALSE, customCol=NULL, seed=123, myYlim=c(0,1.4), showPlot=FALSE, saveTiff=FALSE){
-  
+
   #####  RELSA score all data
   df <-NULL
   for(i in 1:length(unique(refset$id))){
     animal       <- i
     R            <- hrelsa(refset, bsl, a=animal, drop=drops, turnvars=turns, zvars=zvars, relsaNA=relsaNA)$relsa
     C            <- refset[refset$id==unique(refset$id)[animal],"condition"]
-    df           <- rbind(df, data.frame(id=unique(refset$id)[animal], day=R$day, condition=C, relsa=R$rms))
+    df           <- rbind(df, data.frame(id=unique(refset$id)[animal], time=R$time, condition=C, relsa=R$rms))
   }
-  
+
   ##### order data
   a    <- df$rms
   b    <- a[order(a)]
   b    <- b[complete.cases(b)] # remove NAs
-  
+
   # show scree plot
   if(showScree){
     set.seed(123)
@@ -54,7 +54,7 @@ hrelsa_levels <- function(refset, mypath = NULL, filename=NULL, bsl=bsl, drops=N
          ylab="Within groups sum of squares", pch=19, cex.lab=1.4, cex.axis=1.4)
     abline(v=k, col="red", lwd=2, lty=2)
   }
-  
+
   ##### kmeans with k-clusters with or without seeding
   if(length(seed)==0){
     cl  <- kmeans(b,k)
@@ -62,8 +62,8 @@ hrelsa_levels <- function(refset, mypath = NULL, filename=NULL, bsl=bsl, drops=N
     set.seed(seed)
     cl  <- kmeans(b,k, iter.max =100)
   }
-  
-  
+
+
   # generate color index for k clusters or use custom color
   if(length(customCol)==0){
     mypalette <- colorRampPalette(c("red", "green"))
@@ -79,9 +79,9 @@ hrelsa_levels <- function(refset, mypath = NULL, filename=NULL, bsl=bsl, drops=N
       mycol[cl$cluster==j] <- mypalette[j]
     }
   }
-  
-  
-  
+
+
+
   # find levels
   l      <- c()
   clname <- c()
@@ -90,19 +90,19 @@ hrelsa_levels <- function(refset, mypath = NULL, filename=NULL, bsl=bsl, drops=N
     clname[j] <- paste("level",j, sep="")
   }
   clname      <- append(clname, paste("level",k+1, sep=""))
-  
+
   # Cluster level definition
   levels           <- t(matrix(sort(c(l,max(b)))))
   colnames(levels) <- clname
   levels           <- as.data.frame(levels)
-  
+
   # Plot and/or export the cluster levels
   if(saveTiff){
     f_name  <- paste(filename,".tiff",sep="")
     mypath  <- paste(mypath, f_name,sep="")
     tiff(mypath, width = 1100, height = 1100, units = "px", pointsize = 8,res = 400, compression = "lzw")
   }else {}
-  
+
   if(showPlot){
     # plotting the clusters
     plot(b, pch=19, ylab="RELSA score", ylim=myYlim)
@@ -110,13 +110,13 @@ hrelsa_levels <- function(refset, mypath = NULL, filename=NULL, bsl=bsl, drops=N
     for(j in 1:k){
       abline(h=levels[j], lwd=1, lty=2)
     }
-    
+
   }else{}
-  
+
   if(saveTiff){
     dev.off()
   }else{}
-  
+
   return(levels=levels)
-  
+
 }

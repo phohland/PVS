@@ -62,7 +62,7 @@ hrelsa_plot <-
 
       if (length(plotvar) != 0) {
         plot(
-          plotset$day,
+          plotset$time,
           unlist(plotset[, which(names(plotset) == plotvar)]),
           pch = mypch,
           cex.axis = 1.2,
@@ -76,7 +76,7 @@ hrelsa_plot <-
         if (plothRELSA == TRUE) {
           par(new = TRUE)
           plot(
-            plotset$day,
+            plotset$time,
             hrelsatype,
             type = "b",
             lwd = 2,
@@ -108,7 +108,7 @@ hrelsa_plot <-
 
       } else{
         plot(
-          hRELSA$relsa$day ,
+          hRELSA$relsa$time ,
           hrelsatype,
           type = "b",
           lwd = 2,

@@ -6,7 +6,7 @@
 #' a day column will be added
 #'
 #' @param dat data set
-#' @param format either "day" or "year" (a transformation to years is possible as well)
+#' @param format either "day", "year" or "timecode" (a transformation to years is possible as well)
 #' @param formthis date variable
 #' @param newdayone for each patient a day 1? (TRUE/FALSE)
 #'
@@ -58,6 +58,7 @@ hrelsa_days <- function (raw,
       raw[col_id] <- as.Date(unlist(raw[col_id], use.names = FALSE), date_format)
     } else {
       col_id <- which(names(raw) == formthis)
+      raw$dummy <- raw[col_id]
       raw[col_id] <- as.numeric(unlist(raw[col_id], use.names = FALSE))
     }
 
@@ -129,9 +130,13 @@ hrelsa_days <- function (raw,
       ret <- arrange(ret, id, day)
       raw <- ret
     }
-    if (format == "year") {
-      colnames(raw)[which(names(raw) == "day")] <- "year"
-    }
+
+      if (format == "timecode") {
+        raw[col_id] <- raw$dummy
+        raw <- raw[, -which(names(raw) == "dummy")]
+      }
+      colnames(raw)[which(names(raw) == "day")] <- "time"
+
   }
   return(raw)
 }

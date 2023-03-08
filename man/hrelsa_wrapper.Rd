@@ -2,7 +2,8 @@
 % Please edit documentation in R/hrelsa_wrapper.R
 \name{hrelsa_wrapper}
 \alias{hrelsa_wrapper}
-\title{hRELSA Wrapper}
+\title{hRELSA Wrapper is until now not recommended to use!
+Please ask the author for application of the hRELSA.}
 \usage{
 hrelsa_wrapper(
   data_path = NULL,
@@ -30,12 +31,7 @@ hrelsa_wrapper(
   which_var_to_plot = NULL
 )
 }
-\arguments{
-\item{x}{}
-}
-\value{
-\code{robj}
-}
 \description{
-The \code{hrelsa_wrapper}
+hRELSA Wrapper is until now not recommended to use!
+Please ask the author for application of the hRELSA.
 }

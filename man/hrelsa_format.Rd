@@ -9,8 +9,9 @@ hrelsa_format(
   id = NULL,
   treatment = NULL,
   condition = NULL,
-  day = NULL,
-  vars = NULL
+  time = NULL,
+  vars = NULL,
+  included_realtime = NULL
 )
 }
 \arguments{
@@ -22,9 +23,9 @@ hrelsa_format(
 
 \item{condition}{condition variable}
 
-\item{day}{day variable}
-
 \item{vars}{variables to work with}
+
+\item{day}{day variable}
 }
 \value{
 \code{dat} data set rearranged,
