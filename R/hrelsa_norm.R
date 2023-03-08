@@ -69,8 +69,9 @@ hrelsa_norm <-
 
           } else {
             # Here happens the normal variable normalization
-            mydayone      <- set[set$id == n[i], normthese[j]]
-            mydayone[, 1]  <-
+            #mydayone      <- set[set$id == n[i], normthese[j]]
+            #mydayone[,1]  <-
+            mydayone <-
               set[set$id == n[i] &
                     set$time == ontime, normthese[j]]
             mymeans       <-
@@ -91,7 +92,7 @@ hrelsa_norm <-
             n_occur       <- NULL
             n_occur       <-
               data.frame(table(set[set$id %in% n[i], "time"]))
-            if (sum(n_occur$Freq) > length(n_occur$time)) {
+            if (sum(n_occur$Freq) > length(n_occur[,1])) {
               warning(
                 "There are multiple daily entries per id.
                       Normalization probably incorrect."
