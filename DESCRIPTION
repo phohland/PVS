@@ -8,3 +8,4 @@ Description: A score to assess with given clinical data the process of the disea
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.2.1

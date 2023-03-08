@@ -12,12 +12,13 @@
 
 ## normthese = all variables
 
-relsa_wrapper <- function(
+hrelsa_wrapper <- function(
     # input file
   data_path = NULL,
   data_seperation = NULL,
   data_decimal = NULL,
   data_sheet = NULL,
+  raw = NULL,
 
     # data formation
   id = NULL,
@@ -27,6 +28,7 @@ relsa_wrapper <- function(
   day = NULL,
   form_to_day = NULL,
   day_format = NULL,
+  form_day_into = "day",
   new_day_one = NULL,
 
   vars = NULL,
@@ -58,19 +60,21 @@ relsa_wrapper <- function(
   }
 
   # Warnings leading to abort
-  if (is.null(data_path)) {
+  if (is.null(data_path) && is.null(raw)) {
     warning("There was no data path found. Please insert your data path including
             the file ending in the following way: data_path = 'example_file.csv'.
             The hRELSA was not calculated.")
     abort <- TRUE
   }
-  if (!(file.exists(data_path))) {
-    warning("The inserted file was not found. Please insert your data path in the
+  if (!(is.null(data_path))) {
+    if (!(file.exists(data_path))) {
+      warning("The inserted file was not found. Please insert your data path in the
             following way: data_path = 'example_path'.
             The hRELSA was not calculated.")
-    abort <- TRUE
+      abort <- TRUE
+    }
   }
-  if (!(data_ending %in% c("csv", "xls", "xlsx", "txt"))) {
+  if (!(data_ending %in% c("csv", "xls", "xlsx", "txt")) && is.null(raw)) {
     warning("The inserted file has no csv-, txt-, xls- or xlsx-ending. A file with one
             of those endings is necessairy.
             The hRELSA was not calculated.")
@@ -113,19 +117,19 @@ relsa_wrapper <- function(
 
 
   # Warnings leading to no abort
-  if (is.null(data_seperation) && data_ending %in% c("csv", "txt")) {
+  if (is.null(data_seperation) && data_ending %in% c("csv", "txt") && is.null(raw)) {
     data_seperation <- ","
     cat("While processing the inserted csv file the assumption that the data is
         seperated with a ',' has been made.
         If the file is not seperated that way, please use: data_seperation = ''.\n")
   }
-  if (is.null(data_decimal) && data_ending %in% c("csv", "txt")) {
+  if (is.null(data_decimal) && data_ending %in% c("csv", "txt") && is.null(raw)) {
     data_decimal <- "."
     cat("While processing the inserted csv file the assumption that the data
         decimal seperation is '.' has been made.
         If the decimal seperation is not that way, please use: data_decimal = '.'.\n")
   }
-  if (is.null(data_sheet) && data_ending %in% c("xls", "xlsx")) {
+  if (is.null(data_sheet) && data_ending %in% c("xls", "xlsx") && is.null(raw)) {
     data_sheet <- 1
     cat("While processing the inserted excel file the assumption that the data
         is in sheet 1 has been made.
@@ -144,13 +148,13 @@ relsa_wrapper <- function(
         If only one day one at the earliest time point of the data set is wished,
         please use: new_day_one = FALSE.\n")
   }
-  if (is.null(day_format) && !(is.null(form_to_day))) {
+  if (is.null(day_format) && !(is.null(form_to_day)) && (is.null(form_day_into))) {
     day_format <- "%d%b%Y"
     cat("While processing the inserted time column the assumption that the date
         format is %d%b%Y has been made. If the format is otherwise,
         please use: day_format = ''.\n")
   }
-  if (is.null(k) && !(is.null(levels))) {
+  if (is.null(k) && (levels)) {
     k <- 4
     cat("You want the levels to be given out as well and did not stated the amount
         of the k levels. While processing the levels k = 4 was used.
@@ -164,20 +168,23 @@ relsa_wrapper <- function(
 
   } else {
 
-  if (data_ending %in% c("csv", "txt")) {
-    raw <- read.csv(data_path, sep = data_seperation, header = TRUE, dec = data_decimal, row.names = NULL)
-  } else if (data_ending == "xlsx" || data_ending == "xls") {
-    raw <- read_excel(data_path, sheet = data_sheet)
+
+  if (is.null(raw)) {
+    if (data_ending %in% c("csv", "txt")) {
+      raw <- read.csv(data_path, sep = data_seperation, header = TRUE, dec = data_decimal, row.names = NULL)
+    } else if (data_ending == "xlsx" || data_ending == "xls") {
+      raw <- read_excel(data_path, sheet = data_sheet)
+    }
   }
 
-  raw <- as_tibble(raw)
-  #raw <- raw %>% clean_names
-  col_id <- which(names(raw) == id)
-  colnames(raw)[col_id] <- "id"
-
+    raw <- as_tibble(raw)
+    #raw <- raw %>% clean_names
+    col_id <- which(names(raw) == id)
+    colnames(raw)[col_id] <- "id"
+    id <- "id"
 
   if (is.null(day)) {
-    raw <- hrelsa_days(raw, format = "day", date_format = day_format, formthis = form_to_day, newdayone = new_day_one)
+    raw <- hrelsa_days(raw, format = form_day_into, date_format = day_format, formthis = form_to_day, newdayone = new_day_one)
     day <- "day"
   }
 
