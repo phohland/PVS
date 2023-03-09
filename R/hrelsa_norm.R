@@ -34,7 +34,7 @@ hrelsa_norm <-
               The data set was not normalized.")
       abort <- TRUE
     }
-    if (is.null(ontime)) {
+    if (is.null(ontime) && (FALSE %in% (zvars == normthese))) {
       warning("There was no reference time point (ontime) found.
               The data set was not normalized.")
       abort <- TRUE
