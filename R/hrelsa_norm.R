@@ -45,6 +45,7 @@ hrelsa_norm <-
     if (abort) {
 
     } else {
+      set <- as_tibble(set)
       n   <- unique(set$id)
       set <- arrange(set, id, time)
 
@@ -69,9 +70,8 @@ hrelsa_norm <-
 
           } else {
             # Here happens the normal variable normalization
-            #mydayone      <- set[set$id == n[i], normthese[j]]
-            #mydayone[,1]  <-
-            mydayone <-
+            mydayone      <- set[set$id == n[i], normthese[j]]
+            mydayone[,1]  <-
               set[set$id == n[i] &
                     set$time == ontime, normthese[j]]
             mymeans       <-
