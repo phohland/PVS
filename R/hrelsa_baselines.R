@@ -21,7 +21,8 @@ hrelsa_baselines <-
            bslday = NULL,
            vars = NULL,
            zvars = NULL,
-           turnvars = NULL) {
+           turnvars = NULL
+           ) {
     # Searching for errors ----------------------------------------------------
 
     abort <- FALSE
