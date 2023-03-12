@@ -79,27 +79,23 @@ hrelsa_adaptive_baselines <-
 
           norm_table      <- dat[dat$id == n[i], vars[j]]
           age <- dat$age[dat$id == n[i]]
-          norm_table      <- cbind(norm_table, age)
+          norm_table$age <- NA
+          norm_table$age <- age
 
           for (l in 1:nrow(norm_table)) {
-            pat_age <- norm_table[l, 2]
+            pat_age <- as.numeric(norm_table[l, 2])
             target.index <- which(abs(norm_dat[, 1] - pat_age) == min(abs(norm_dat[, 1] - pat_age)))
+            if (length(target.index) > 1) {
+              target.index <- target.index[1]
+            }
             norm_table[l, 1] <- norm_dat[target.index, j + 1]
           }
 
           # Here is vere the normalization with each base values happens
           mymeans       <-
-            (dat[dat$id %in% n[i], normthese[j]] / norm_table[ , 1]) * 100
+            (dat[dat$id == n[i], vars[j]] / norm_table[ , 1]) * 100
 
-          mytime         <- dat[dat$id == n[i], "time"]
-          mytier        <- dat[dat$id == n[i], "id"]
-          norm          <-
-            rbind(norm,
-                  data.frame(
-                    id = mytier,
-                    time = mytime,
-                    act = mymeans
-                  ))
+          norm          <- rbind(norm, mymeans)
 
           # check if there are multiple entries per id
           # (e.g., multiple measurements per time)
@@ -115,7 +111,7 @@ hrelsa_adaptive_baselines <-
 
       }
 
-      dat[, which(names(dat) == normthese[j])] <- norm[, 3]
+      dat[, which(names(dat) == vars[j])] <- norm
     }
 
 
