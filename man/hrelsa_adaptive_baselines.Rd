@@ -4,7 +4,17 @@
 \alias{hrelsa_adaptive_baselines}
 \title{X}
 \usage{
-hrelsa_adaptive_baselines(raw)
+hrelsa_adaptive_baselines(
+  dat,
+  vars = NULL,
+  turnvars = NULL,
+  realtime = NULL,
+  dob_dat = NULL,
+  dob_data_id_col = NULL,
+  dob_data_dob_col = NULL,
+  norm_dat = NULL,
+  norm_dat_names = NULL
+)
 }
 \arguments{
 \item{raw}{X}
