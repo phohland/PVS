@@ -11,6 +11,7 @@ hrelsa(
   a = 1,
   drop = NULL,
   turnvars = NULL,
+  ambivars = NULL,
   zvars = NULL,
   relsaNA = NA
 )

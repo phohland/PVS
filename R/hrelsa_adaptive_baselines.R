@@ -13,6 +13,7 @@ hrelsa_adaptive_baselines <-
   function(dat,
            vars = NULL,
            turnvars = NULL,
+           ambivars = NULL,
            realtime = NULL,
 
            dob_dat = NULL,
@@ -52,24 +53,24 @@ hrelsa_adaptive_baselines <-
 
     # Normalization -----------------------------------------------------------
 
-    dat <- as_tibble(dat)
-    n   <- unique(dat$id)
-    dat <- arrange(dat, id, time)
+    pre <- as_tibble(dat)
+    n   <- unique(pre$id)
+    pre <- arrange(pre, id, time)
 
-    col_time <- which(names(dat) == realtime)
-    names(dat)[col_time] <- "timepoint"
+    col_time <- which(names(pre) == realtime)
+    names(pre)[col_time] <- "timepoint"
 
     names(dob_dat)[dob_data_id_col] <- "id"
     names(dob_dat)[dob_data_dob_col] <- "dob"
 
-    dat$age <- 0
+    pre$age <- 0
 
     # Calculates the age regarding the dob of the extern table and the current time point
-    for (l in 1:nrow(dat)) {
-      timepoint <- dat$timepoint[l]
-      dob <- dob_dat$dob[dob_dat$id == as.character(dat$id[l])]
+    for (l in 1:nrow(pre)) {
+      timepoint <- pre$timepoint[l]
+      dob <- dob_dat$dob[dob_dat$id == as.character(pre$id[l])]
 
-      dat$age[l] <- difftime(timepoint, dob, units = "days") / 365.25
+      pre$age[l] <- difftime(timepoint, dob, units = "days") / 365.25
     }
 
 
@@ -77,8 +78,8 @@ hrelsa_adaptive_baselines <-
       norm            <- NULL
       for (i in 1:length(n)) {
 
-          norm_table      <- dat[dat$id == n[i], vars[j]]
-          age <- dat$age[dat$id == n[i]]
+          norm_table      <- pre[pre$id == n[i], vars[j]]
+          age <- pre$age[pre$id == n[i]]
           norm_table$age <- NA
           norm_table$age <- age
 
@@ -93,7 +94,7 @@ hrelsa_adaptive_baselines <-
 
           # Here is vere the normalization with each base values happens
           mymeans       <-
-            (dat[dat$id == n[i], vars[j]] / norm_table[ , 1]) * 100
+            (pre[pre$id == n[i], vars[j]] / norm_table[ , 1]) * 100
 
           norm          <- rbind(norm, mymeans)
 
@@ -101,7 +102,7 @@ hrelsa_adaptive_baselines <-
           # (e.g., multiple measurements per time)
           n_occur       <- NULL
           n_occur       <-
-            data.frame(table(dat[dat$id %in% n[i], "time"]))
+            data.frame(table(pre[pre$id %in% n[i], "time"]))
           if (sum(n_occur$Freq) > length(n_occur[,1])) {
             warning(
               "There are multiple daily entries per id.
@@ -111,16 +112,26 @@ hrelsa_adaptive_baselines <-
 
       }
 
-      dat[, which(names(dat) == vars[j])] <- norm
+      pre[, which(names(pre) == vars[j])] <- norm
     }
 
 
 # Baseline ----------------------------------------------------------------
 
-      maxsev <- apply(dat[, vars], 2, min, na.rm = TRUE)
+      maxsev <- apply(pre[, vars], 2, min, na.rm = TRUE)
 
     if (length(turnvars) > 0) {
-      maxsev[turnvars] <- apply(dat[, turnvars], 2, max, na.rm = TRUE)
+      maxsev[turnvars] <- apply(pre[, turnvars], 2, max, na.rm = TRUE)
+    }
+
+    if (length(ambivars) > 0) {
+      maxsev[ambivars] <- apply(pre[, ambivars], 2, min, na.rm = TRUE)
+      maxsev_max <- apply(pre[, ambivars], 2, max, na.rm = TRUE)
+      for (t in 1:length(maxsev[ambivars])) {
+        if (maxsev_max[t] > maxsev[ambivars][t]) {
+          maxsev[ambivars][t] <- maxsev_max[t]
+        }
+      }
     }
 
     # Fetch maximum delta between 100% and highest severity
@@ -129,10 +140,10 @@ hrelsa_adaptive_baselines <-
     # Model characteristics
     ristics           <-
       data.frame(
-        n          = length(unique(dat$id)),
-        treatments = length(unique(dat$treatment)),
-        conditions = length(unique(dat$condition)),
-        variables  = dim(dat[, vars])[2]
+        n          = length(unique(pre$id)),
+        treatments = length(unique(pre$treatment)),
+        conditions = length(unique(pre$condition)),
+        variables  = dim(pre[, vars])[2]
       )
 
     # Giving the baseline table, max severity, max delta and
@@ -140,7 +151,7 @@ hrelsa_adaptive_baselines <-
     # For just z variables without baseline table
       ret <-
         list(
-          pre = dat[ , -(which(names(dat) %in% c("age", "timepoint")))],
+          pre = pre[ , -(which(names(pre) %in% c("age", "timepoint")))],
           maxsev = maxsev,
           maxdelta = maxdelta,
           ristics = ristics
@@ -151,7 +162,9 @@ hrelsa_adaptive_baselines <-
       length(vars),
       "variables.",
       length(turnvars),
-      "of them are turned variables."
+      "of them are turned variables and",
+      length(ambivars),
+      "of them are ambivalent variables."
     )
 
   return(ret)

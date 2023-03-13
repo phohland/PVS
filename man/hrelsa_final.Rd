@@ -9,8 +9,9 @@ hrelsa_final(
   pre,
   bsl,
   drop = NULL,
-  turnvars = turnvars,
-  zvars = zvars,
+  turnvars = NULL,
+  ambivars = NULL,
+  zvars = NULL,
   relsaNA = NA
 )
 }

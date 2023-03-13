@@ -24,8 +24,9 @@ hrelsa_final <-
   function(pre,
            bsl,
            drop = NULL,
-           turnvars = turnvars,
-           zvars = zvars,
+           turnvars = NULL,
+           ambivars = NULL,
+           zvars = NULL,
            relsaNA = NA) {
     # Searching for errors ----------------------------------------------------
 
@@ -52,6 +53,7 @@ hrelsa_final <-
           a = i,
           drop = NULL,
           turnvars = turnvars,
+          ambivars = ambivars,
           zvars = zvars,
           relsaNA = relsaNA
         )$relsa

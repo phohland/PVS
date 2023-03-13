@@ -8,6 +8,7 @@ hrelsa_adaptive_baselines(
   dat,
   vars = NULL,
   turnvars = NULL,
+  ambivars = NULL,
   realtime = NULL,
   dob_dat = NULL,
   dob_data_id_col = NULL,
