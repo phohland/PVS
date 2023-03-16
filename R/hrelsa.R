@@ -83,25 +83,25 @@ hrelsa <-
         bsdelta[turnvars] <- bsdelta[turnvars] * -1
       }
 
-      if (length(ambivars) > 0) {
-        ambivars_min <- NULL
-        ambivars_max <- NULL
-        maxsev_min <- apply(pre[, ambivars], 2, min, na.rm = TRUE)
-        maxsev_max <- apply(pre[, ambivars], 2, max, na.rm = TRUE)
-        for (t in 1:length(maxsev_min)) {
-          if (maxsev_max[t] > maxsev_min[t]) {
-            ambivars_max <- append(ambivars_max, ambivars[t])
-          } else {
-            ambivars_min <- append(ambivars_max, ambivars[t])
-          }
-        }
-
-      if (length(ambivars_max) > 0) {
-        delta[, ambivars_max] <- delta[, ambivars_max] * -1
-        bsdelta[ambivars_max] <- bsdelta[ambivars_max] * -1
-      }
-
-      }
+      # if (length(ambivars) > 0) {
+      #   ambivars_min <- NULL
+      #   ambivars_max <- NULL
+      #   maxsev_min <- apply(pre[, ambivars], 2, min, na.rm = TRUE)
+      #   maxsev_max <- apply(pre[, ambivars], 2, max, na.rm = TRUE)
+      #   for (t in 1:length(maxsev_min)) {
+      #     if (maxsev_max[t] > maxsev_min[t]) {
+      #       ambivars_max <- append(ambivars_max, ambivars[t])
+      #     } else {
+      #       ambivars_min <- append(ambivars_max, ambivars[t])
+      #     }
+      #   }
+      #
+      # if (length(ambivars_max) > 0) {
+      #   delta[, ambivars_max] <- delta[, ambivars_max] * -1
+      #   bsdelta[ambivars_max] <- bsdelta[ambivars_max] * -1
+      # }
+      #
+      # }
 
       if (length(zvars) > 0) {
         delta[, zvars] <- delta[, zvars] * -1
