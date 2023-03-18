@@ -96,6 +96,17 @@ hrelsa_adaptive_baselines <-
           mymeans       <-
             (pre[pre$id == n[i], vars[j]] / norm_table[ , 1]) * 100
 
+          # ambivar normalization
+          if (vars[j] %in% ambivars) {
+            for (b in 1:nrow(mymeans)) {
+              if (!(is.na(mymeans[b, 1]))) {
+                if (mymeans[b, 1] < 100) {
+                  mymeans[b, 1] <- 100 + (100 - mymeans[b, 1])
+                }
+              }
+            }
+          }
+
           norm          <- rbind(norm, mymeans)
 
           # check if there are multiple entries per id
@@ -124,15 +135,10 @@ hrelsa_adaptive_baselines <-
       maxsev[turnvars] <- apply(pre[, turnvars], 2, max, na.rm = TRUE)
     }
 
-    # if (length(ambivars) > 0) {
-    #   maxsev[ambivars] <- apply(pre[, ambivars], 2, min, na.rm = TRUE)
-    #   maxsev_max <- apply(pre[, ambivars], 2, max, na.rm = TRUE)
-    #   for (t in 1:length(maxsev[ambivars])) {
-    #     if (maxsev_max[t] > maxsev[ambivars][t]) {
-    #       maxsev[ambivars][t] <- maxsev_max[t]
-    #     }
-    #   }
-    # }
+    # Ambivar implementation
+    if (length(ambivars) > 0) {
+      maxsev[ambivars] <- apply(pre[, ambivars], 2, max, na.rm = TRUE)
+    }
 
     # Fetch maximum delta between 100% and highest severity
     maxdelta            <- abs(100 - maxsev)

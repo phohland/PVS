@@ -11,6 +11,7 @@ hrelsa_levels(
   bsl = bsl,
   drops = NULL,
   turns = NULL,
+  ambivars = NULL,
   zvars = NULL,
   relsaNA = NA,
   k = 4,

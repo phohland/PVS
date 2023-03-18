@@ -27,14 +27,14 @@
 #' @export
 #'
 
-hrelsa_levels <- function(refset, mypath = NULL, filename=NULL, bsl=bsl, drops=NULL, turns=NULL, zvars=NULL, relsaNA=NA, k=4,
+hrelsa_levels <- function(refset, mypath = NULL, filename=NULL, bsl=bsl, drops=NULL, turns=NULL, ambivars=NULL, zvars=NULL, relsaNA=NA, k=4,
                          showScree=FALSE, customCol=NULL, seed=123, myYlim=c(0,1.4), showPlot=FALSE, saveTiff=FALSE){
 
   #####  RELSA score all data
   df <-NULL
   for(i in 1:length(unique(refset$id))){
     animal       <- i
-    R            <- hrelsa(refset, bsl, a=animal, drop=drops, turnvars=turns, zvars=zvars, relsaNA=relsaNA)$relsa
+    R            <- hrelsa(refset, bsl, a=animal, drop=drops, turnvars=turns, zvars=zvars, ambivars=ambivars, relsaNA=relsaNA)$relsa
     C            <- refset[refset$id==unique(refset$id)[animal],"condition"]
     df           <- rbind(df, data.frame(id=unique(refset$id)[animal], time=R$time, condition=C, relsa=R$rms))
   }
