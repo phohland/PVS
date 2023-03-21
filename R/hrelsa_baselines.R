@@ -21,7 +21,8 @@ hrelsa_baselines <-
            bslday = NULL,
            vars = NULL,
            zvars = NULL,
-           turnvars = NULL
+           turnvars = NULL,
+           ambivars = NULL
            ) {
     # Searching for errors ----------------------------------------------------
 
@@ -118,6 +119,10 @@ hrelsa_baselines <-
         maxsev[zvars] <- apply(abs(pre[, zvars]), 2, max, na.rm = TRUE)
       }
 
+      if (length(ambivars) > 0) {
+        maxsev[ambivars] <- apply(pre[, ambivars], 2, max, na.rm = TRUE)
+      }
+
       # Fetch maximum delta between 100% and highest severity
       maxdelta            <- abs(100 - maxsev)
 
@@ -152,9 +157,11 @@ hrelsa_baselines <-
         length(vars),
         "variables.",
         length(turnvars),
-        "of them are turned variables and",
+        "of them are turned variables,",
         length(zvars),
-        "of them are z variables."
+        "of them are z variables and",
+        length(ambivars),
+        "of them are ambivalent variables."
       )
       return(ret)
 

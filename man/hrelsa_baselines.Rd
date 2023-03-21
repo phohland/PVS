@@ -9,7 +9,8 @@ hrelsa_baselines(
   bslday = NULL,
   vars = NULL,
   zvars = NULL,
-  turnvars = NULL
+  turnvars = NULL,
+  ambivars = NULL
 )
 }
 \arguments{

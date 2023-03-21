@@ -4,7 +4,13 @@
 \alias{hrelsa_norm}
 \title{Normalizes the data set for hRELSA calculation}
 \usage{
-hrelsa_norm(set, normthese = NULL, zvars = NULL, ontime = NULL)
+hrelsa_norm(
+  set,
+  normthese = NULL,
+  zvars = NULL,
+  ambivars = NULL,
+  ontime = NULL
+)
 }
 \arguments{
 \item{set}{data set}

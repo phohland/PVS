@@ -21,6 +21,7 @@ hrelsa_norm <-
   function(set,
            normthese = NULL,
            zvars = NULL,
+           ambivars = NULL,
            ontime = NULL) {
     # Searching for errors ----------------------------------------------------
 
@@ -76,6 +77,17 @@ hrelsa_norm <-
                     set$time == ontime, normthese[j]]
             mymeans       <-
               (set[set$id %in% n[i], normthese[j]] / mydayone) * 100
+
+            # ambivar normalization
+            if (normthese[j] %in% ambivars) {
+              for (b in 1:nrow(mymeans)) {
+                if (!(is.na(mymeans[b, 1]))) {
+                  if (mymeans[b, 1] < 100) {
+                    mymeans[b, 1] <- 100 + (100 - mymeans[b, 1])
+                  }
+                }
+              }
+            }
 
             mytime         <- set[set$id == n[i], "time"]
             mytier        <- set[set$id == n[i], "id"]
