@@ -2,7 +2,9 @@
 % Please edit documentation in R/hrelsa_adaptive_baselines.R
 \name{hrelsa_adaptive_baselines}
 \alias{hrelsa_adaptive_baselines}
-\title{X}
+\title{Defines baselines and maximum severity values for hRELSA calculation using
+the adaptive reference method
+Here is the normalization included as well}
 \usage{
 hrelsa_adaptive_baselines(
   dat,
@@ -18,11 +20,31 @@ hrelsa_adaptive_baselines(
 )
 }
 \arguments{
-\item{raw}{X}
+\item{dat}{formatted data set}
+
+\item{vars}{variables to work with}
+
+\item{turnvars}{turned variables}
+
+\item{ambivars}{ambivalent variables}
+
+\item{realtime}{the real time point for age calculcation, the real time needs to be included in dat}
+
+\item{dob_dat}{data with date of birth in it}
+
+\item{dob_data_id_col}{column id of id in dob data set}
+
+\item{dob_data_dob_col}{column id of date of birth in dob data set}
+
+\item{norm_dat}{data set with normal / reference values}
+
+\item{norm_dat_names}{names of the norm dat data set}
 }
 \value{
-\code{X} X
+\code{ret} list with reference variables set to 100 %,
+maximum reached values and some characteristics
 }
 \description{
-The \code{hrelsa_adaptive_baselines} X
+The \code{hrelsa_adaptive_baselines} function normalizes the data,
+calculates baselines, maximum severity, maximum delta and some characteristics
 }

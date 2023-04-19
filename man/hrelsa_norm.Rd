@@ -19,6 +19,8 @@ hrelsa_norm(
 
 \item{zvars}{z variables (need to be contained in normthese as well)}
 
+\item{ambivars}{ambivalent variables}
+
 \item{ontime}{unique reference time point in data set (e.g. 1 for day 1)}
 }
 \value{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/hrelsa_wrapper.R
 \name{hrelsa_wrapper}
 \alias{hrelsa_wrapper}
-\title{hRELSA Wrapper is until now not recommended to use!
+\title{The hRELSA wrapper function is currently OUT OF USE.
 Please ask the author for application of the hRELSA.}
 \usage{
 hrelsa_wrapper(
@@ -32,6 +32,6 @@ hrelsa_wrapper(
 )
 }
 \description{
-hRELSA Wrapper is until now not recommended to use!
+The hRELSA wrapper function is currently OUT OF USE.
 Please ask the author for application of the hRELSA.
 }

@@ -13,16 +13,16 @@ hrelsa_days(
 )
 }
 \arguments{
+\item{raw}{data set}
+
 \item{format}{either "day", "year" or "timecode" (a transformation to years is possible as well)}
 
 \item{formthis}{date variable}
 
 \item{newdayone}{for each patient a day 1? (TRUE/FALSE)}
-
-\item{dat}{data set}
 }
 \value{
-\code{dat} data set with day column added
+\code{raw} data set with day column added
 }
 \description{
 The \code{hrelsa_days} function transforms dates into days as integer

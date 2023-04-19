@@ -25,9 +25,11 @@ hrelsa_baselines(
 
 \item{turnvars}{variables with "turned" direction
 (e.g. c("hr","temp")) (not needed with just z variables)}
+
+\item{ambivars}{ambivalent variables}
 }
 \value{
-\code{baseline} list with reference variables set to 100 %,
+\code{ret} list with reference variables set to 100 %,
 maximum reached values and some characteristics
 }
 \description{

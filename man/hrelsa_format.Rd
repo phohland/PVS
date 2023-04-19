@@ -23,9 +23,11 @@ hrelsa_format(
 
 \item{condition}{condition variable}
 
+\item{time}{time variable}
+
 \item{vars}{variables to work with}
 
-\item{day}{day variable}
+\item{included_realtime}{variable of realtime variable when needed}
 }
 \value{
 \code{dat} data set rearranged,

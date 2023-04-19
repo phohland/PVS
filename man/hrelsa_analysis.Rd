@@ -7,7 +7,7 @@
 hrelsa_analysis(set)
 }
 \arguments{
-\item{final}{hRELSAed data set (by hrelsa_final)}
+\item{set}{hRELSAed data set (by hrelsa_final)}
 }
 \value{
 \code{analysis} Outputs some basic data set informations, and the

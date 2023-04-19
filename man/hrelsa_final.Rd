@@ -24,6 +24,8 @@ hrelsa_final(
 
 \item{turnvars}{variables with "turned" direction}
 
+\item{ambivars}{ambivalent variables}
+
 \item{zvars}{z variables}
 
 \item{relsaNA}{code how to handle NaN values during calculations
