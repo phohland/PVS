@@ -1,10 +1,23 @@
-#' X
+#' Defines baselines and maximum severity values for hRELSA calculation using
+#' the adaptive reference method
+#' Here is the normalization included as well
 #'
-#' The \code{hrelsa_adaptive_baselines} X
+#' The \code{hrelsa_adaptive_baselines} function normalizes the data,
+#' calculates baselines, maximum severity, maximum delta and some characteristics
 #'
-#' @param raw X
+#' @param dat formatted data set
+#' @param vars variables to work with
+#' @param turnvars turned variables
+#' @param ambivars ambivalent variables
+#' @param realtime the real time point for age calculcation, the real time needs to be included in dat
+#' @param dob_dat data with date of birth in it
+#' @param dob_data_id_col column id of id in dob data set
+#' @param dob_data_dob_col column id of date of birth in dob data set
+#' @param norm_dat data set with normal / reference values
+#' @param norm_dat_names names of the norm dat data set
 #'
-#' @return \code{X} X
+#' @return \code{ret} list with reference variables set to 100 %,
+#' maximum reached values and some characteristics
 #'
 #' @export
 #'

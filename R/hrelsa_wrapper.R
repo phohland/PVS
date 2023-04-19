@@ -1,4 +1,5 @@
-#' hRELSA Wrapper is until now not recommended to use!
+#'
+#' The hRELSA wrapper function is currently OUT OF USE.
 #' Please ask the author for application of the hRELSA.
 #'
 

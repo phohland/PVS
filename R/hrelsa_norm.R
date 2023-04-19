@@ -10,6 +10,7 @@
 #' @param set data set
 #' @param normthese variable names in the data set that shall be normalized
 #' @param zvars z variables (need to be contained in normthese as well)
+#' @param ambivars ambivalent variables
 #' @param ontime unique reference time point in data set (e.g. 1 for day 1)
 #'
 #' @return \code{set} data set with normalized values

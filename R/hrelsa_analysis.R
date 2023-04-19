@@ -3,7 +3,7 @@
 #' The \code{hrelsa_analysis} evaluates relevant informations about the patients
 #' with the highest severity
 #'
-#' @param final hRELSAed data set (by hrelsa_final)
+#' @param set hRELSAed data set (by hrelsa_final)
 #'
 #' @return \code{analysis} Outputs some basic data set informations, and the
 #' analysis of wfactor, wf and rms

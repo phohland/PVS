@@ -5,12 +5,12 @@
 #' or with the first date of the whole data set as day 1
 #' a day column will be added
 #'
-#' @param dat data set
+#' @param raw data set
 #' @param format either "day", "year" or "timecode" (a transformation to years is possible as well)
 #' @param formthis date variable
 #' @param newdayone for each patient a day 1? (TRUE/FALSE)
 #'
-#' @return \code{dat} data set with day column added
+#' @return \code{raw} data set with day column added
 #'
 #' @export
 #'

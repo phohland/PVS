@@ -7,8 +7,9 @@
 #' @param id id variable
 #' @param treatment treatment variable
 #' @param condition condition variable
-#' @param day day variable
+#' @param time time variable
 #' @param vars variables to work with
+#' @param included_realtime variable of realtime variable when needed
 #'
 #' @return \code{dat} data set rearranged,
 #' just with needed and with properly named columns

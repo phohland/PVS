@@ -10,11 +10,13 @@
 #' @param turnvars variables with "turned" direction
 #' (e.g. c("hr","temp")) (not needed with just z variables)
 #' @param zvars z variables (SDS variables)
+#' @param ambivars ambivalent variables
 #'
-#' @return \code{baseline} list with reference variables set to 100 %,
+#' @return \code{ret} list with reference variables set to 100 %,
 #' maximum reached values and some characteristics
 #'
 #' @export
+#'
 
 hrelsa_baselines <-
   function(pre,

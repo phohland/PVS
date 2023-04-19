@@ -12,6 +12,7 @@
 #' @param drop variables which shall not used for hRELSA
 #' @param turnvars variables with "turned" direction
 #' @param zvars z variables
+#' @param ambivars ambivalent variables
 #' @param relsaNA code how to handle NaN values during calculations
 #' (default is NA)
 #'
@@ -19,6 +20,7 @@
 #' (differences and weights plus hRELSA score)
 #'
 #' @export
+#'
 
 hrelsa_final <-
   function(pre,

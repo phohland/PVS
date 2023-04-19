@@ -12,6 +12,7 @@
 #' @param a unique patient index in data set
 #' @param drop variables which shall not used for hRELSA
 #' @param turnvars variables with "turned" direction
+#' @param ambivars ambivalent variables
 #' @param zvars z variables
 #' @param relsaNA code how to handle NaN values during calculations
 #' (default is NA)
