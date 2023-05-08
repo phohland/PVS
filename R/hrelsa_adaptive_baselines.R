@@ -24,6 +24,7 @@
 
 hrelsa_adaptive_baselines <-
   function(dat,
+           reference_dat,
            vars = NULL,
            turnvars = NULL,
            ambivars = NULL,
@@ -39,7 +40,7 @@ hrelsa_adaptive_baselines <-
     # Searching for errors ----------------------------------------------------
 
     abort <- FALSE
-    if (is.null(dat)) {
+    if (is.null(dat) || is.null(reference_dat)) {
       warning("There was no data set found. The baseline was not calculated.")
       abort <- TRUE
     }
@@ -142,15 +143,17 @@ hrelsa_adaptive_baselines <-
 
 # Baseline ----------------------------------------------------------------
 
-      maxsev <- apply(pre[, vars], 2, min, na.rm = TRUE)
+    ref_pre <- pre[pre$id %in% as.character(reference_dat$id), ]
+
+    maxsev <- apply(ref_pre[, vars], 2, min, na.rm = TRUE)
 
     if (length(turnvars) > 0) {
-      maxsev[turnvars] <- apply(pre[, turnvars], 2, max, na.rm = TRUE)
+      maxsev[turnvars] <- apply(ref_pre[, turnvars], 2, max, na.rm = TRUE)
     }
 
     # Ambivar implementation
     if (length(ambivars) > 0) {
-      maxsev[ambivars] <- apply(pre[, ambivars], 2, max, na.rm = TRUE)
+      maxsev[ambivars] <- apply(ref_pre[, ambivars], 2, max, na.rm = TRUE)
     }
 
     # Fetch maximum delta between 100% and highest severity
@@ -159,10 +162,10 @@ hrelsa_adaptive_baselines <-
     # Model characteristics
     ristics           <-
       data.frame(
-        n          = length(unique(pre$id)),
-        treatments = length(unique(pre$treatment)),
-        conditions = length(unique(pre$condition)),
-        variables  = dim(pre[, vars])[2]
+        n          = length(unique(ref_pre$id)),
+        treatments = length(unique(ref_pre$treatment)),
+        conditions = length(unique(ref_pre$condition)),
+        variables  = dim(ref_pre[, vars])[2]
       )
 
     # Giving the baseline table, max severity, max delta and

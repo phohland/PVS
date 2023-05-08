@@ -35,10 +35,20 @@ hrelsa_analysis <- function(set) {
     subset <- set[, (which(names(set) == "time") + 1):(length(names(set)) - 2)]
 
     # wfactor analysis
-    max_wfactor <- max(subset, na.rm = TRUE)
-    max_wfactor_where <-
-      which(subset == max_wfactor, arr.ind = TRUE)
-    max_wfactor_rdy <- set[max_wfactor_where[, 1], ]
+    # max_wfactor <- max(subset, na.rm = TRUE)
+    # max_wfactor_where <-
+    #   which(subset == max_wfactor, arr.ind = TRUE)
+    # max_wfactor_rdy <- set[max_wfactor_where[, 1], ]
+
+    # new wfactor analysis
+    max_wfactor_rdy <- set[0, ]
+    max_wfactor_where <- NULL
+    for (i in 1:length(names(subset))) {
+      max_wfactor <- max(subset[, i], na.rm = TRUE)
+      max_wfactor_where <- append(max_wfactor_where, which(subset[i] == max_wfactor))
+    }
+    max_wfactor_where <- max_wfactor_where[!duplicated(max_wfactor_where)]
+    max_wfactor_rdy <- rbind(max_wfactor_rdy, set[max_wfactor_where, ])
 
     # wf analysis
     max_wf <- max(set$wf, na.rm = TRUE)

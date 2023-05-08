@@ -8,6 +8,7 @@ Here is the normalization included as well}
 \usage{
 hrelsa_adaptive_baselines(
   dat,
+  reference_dat,
   vars = NULL,
   turnvars = NULL,
   ambivars = NULL,
