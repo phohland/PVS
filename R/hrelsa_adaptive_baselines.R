@@ -176,7 +176,8 @@ hrelsa_adaptive_baselines <-
           pre = pre[ , -(which(names(pre) %in% c("age", "timepoint")))],
           maxsev = maxsev,
           maxdelta = maxdelta,
-          ristics = ristics
+          ristics = ristics,
+          age_pre = pre
         )
 
     cat(
