@@ -41,8 +41,5 @@ In this repository, hRELSA is formed into a R package. You can install it as pac
 - **hrelsa_days.R** For calculation of time points with given dates
 - **hrelsa_final.R** For creating severity values for every entry
 - **hrelsa_format.R** For formatting of the raw data
-- **hrelsa_levels.R** For calculation of levels (not included in publication)
 - **hrelsa_norm.R** For normalizing of the formatted data (not for the adaptive reference method)
-- **hrelsa_plot.R** For plotting (not included in publication)
-- **hrelsa_wrapper.R** (not used anymore)
 - **hrelsa.R** For calculation of the final severity weights and values
