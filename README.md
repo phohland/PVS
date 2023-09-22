@@ -1,7 +1,7 @@
-# hRELSA
+# Patient Vital Status (PVS)
 ## A translational approach to quantify a patient’s disease severity in real-time
 
-hRELSA (Relative Severity Assessment in Humans) is a revised and updated version of the RELSA metric, specifically translated to humans. It is designed to offer a more objective, flexible, and real-time assessment of illness severity within the intensive care unit (ICU) setting. By incorporating multiple clinical input variables, hRELSA aims to minimize information loss, facilitate the comparison of individuals and groups, and generate disease-specific outcomes. This approach effectively addresses the existing gap in ICU patient monitoring.
+PVS is a revised and updated version of the RELSA metric, specifically translated to humans. It is designed to offer a more objective, flexible, and real-time assessment of illness severity within the intensive care unit (ICU) setting. By incorporating multiple clinical input variables, PVS aims to minimize information loss, facilitate the comparison of individuals and groups, and generate disease-specific outcomes. This approach effectively addresses the existing gap in ICU patient monitoring.
 
 Repository of the RELSA package: https://github.com/mytalbot/RELSA
 
@@ -19,7 +19,7 @@ Repository of the RELSA package: https://github.com/mytalbot/RELSA
 
 ## Usage
 
-To use hRELSA in your ICU setting, follow these steps:
+To use PVS in your ICU setting, follow these steps:
 
 1. **Data Collection:** Gather the necessary clinical input variables for each patient. These variables may include vital signs, laboratory results, physiological scores, and other relevant clinical measurements.
 
@@ -31,7 +31,7 @@ To use hRELSA in your ICU setting, follow these steps:
 
 ## Installation
 
-In this repository, hRELSA is formed into a R package. You can install it as package and use it as shown in the hRELSA application repository: https://github.com/phohland/hRELSA_application
+In this repository, PVS is formed into a R package. You can install it as package and use it as shown in the PVS application repository: https://github.com/phohland/PVS_application
 
 ## Included Functions
 
