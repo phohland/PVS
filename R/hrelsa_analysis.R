@@ -52,13 +52,13 @@ hrelsa_analysis <- function(set) {
 
     # wf analysis
     max_wf <- max(set$wf, na.rm = TRUE)
-    max_wf_rdy <- filter(set, set$wf == max_wf)
-    max_wf_pat_rdy <- filter(set, set$id == (max_wf_rdy$id[1]))
+    max_wf_rdy <- filter(set, wf == max_wf)
+    max_wf_pat_rdy <- filter(set, id == max_wf_rdy$id[1])
 
     # rms analysis
     max_rms <- max(set$rms, na.rm = TRUE)
-    max_rms_rdy <- filter(set, set$rms == max_rms)
-    max_rms_pat_rdy <- filter(set, set$id == (max_rms_rdy$id[1]))
+    max_rms_rdy <- filter(set, rms == max_rms)
+    max_rms_pat_rdy <- filter(set, id == max_rms_rdy$id[1])
 
     wf_rms_same <- (max_wf_rdy$id[1] == max_rms_rdy$id[1])
 

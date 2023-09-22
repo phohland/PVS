@@ -55,7 +55,7 @@ hrelsa_norm <-
         norm            <- NULL
         for (i in 1:length(n)) {
           if (normthese[j] %in% zvars) {
-            # Here happens the z variable normalization
+            # Here the z variable normalization happens
             # z_norm = (|z| + 1) * 100
             mymeans       <-
               (abs(set[set$id %in% n[i], normthese[j]]) + 1) * 100
@@ -71,7 +71,7 @@ hrelsa_norm <-
                     ))
 
           } else {
-            # Here happens the normal variable normalization
+            # Here the normal variable normalization happens
             mydayone      <- set[set$id == n[i], normthese[j]]
             mydayone[,1]  <-
               set[set$id == n[i] &

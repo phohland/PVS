@@ -1,7 +1,7 @@
 #' Formats the data set for hRELSA calculation
 #'
 #' The \code{hrelsa_format} renames and rearranges the columns to
-#' proper work with
+#' work with properly
 #'
 #' @param dat data set
 #' @param id id variable
