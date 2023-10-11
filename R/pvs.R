@@ -1,28 +1,24 @@
-#' Relative Severity Assessment Score for Humans
-#' = hRELSA
+#' PVS
 #'
-#' The \code{hrelsa} function calculates a composite relative severity score
-#' based on normalized differences. Further, the values are regularized with a
-#' reference set to estimate relative severity.
-#' This is the main function of hRELSA and is normally used in
-#' the hrelsa_final function.
+#' The \code{pvs} function calculates a root mean square as PVS value
+#' using the prior calculated baseline for a specific patient
 #'
 #' @param pre normalized data set
-#' @param bsl data set baseline
-#' @param a unique patient index in data set
-#' @param drop variables which shall not used for hRELSA
+#' @param bsl baseline
+#' @param a unique patient id
+#' @param drop variables which shall not used
 #' @param turnvars variables with "turned" direction
 #' @param ambivars ambivalent variables
 #' @param zvars z variables
-#' @param relsaNA code how to handle NaN values during calculations
+#' @param pvsNA code how to handle NaN values during calculations
 #' (default is NA)
 #'
-#' @return \code{hrelsa} list with hRELSA results for specific patient
-#' (differences and weights plus hRELSA score)
+#' @return \code{pvs} list with PVS results for specific patient
+#' (differences and weights plus PVS score)
 #'
 #' @export
 
-hrelsa <-
+pvs <-
   function(pre = pre,
            bsl,
            a = 1,
@@ -30,16 +26,16 @@ hrelsa <-
            turnvars = NULL,
            ambivars = NULL,
            zvars = NULL,
-           relsaNA = NA) {
+           pvsNA = NA) {
     # Searching for errors ----------------------------------------------------
 
     abort <- FALSE
     if (is.null(pre)) {
-      warning("There was no data set found. The baseline was not calculated.")
+      warning("There was no data set found. The PVS was not calculated.")
       abort <- TRUE
     }
     if (is.null(bsl)) {
-      warning("There was no baseline found. The baseline was not calculated.")
+      warning("There was no baseline found. The PVS was not calculated.")
       abort <- TRUE
     }
 
@@ -75,7 +71,7 @@ hrelsa <-
           zvars[!(zvars %in% drop)]
       }
 
-      # Calculate difference matrix for the patient & turn "positive" variables
+      # Calculate difference matrix for the patient
       delta            <- 100 - subdata[-1]
       bsdelta          <- 100 - bsl$maxsev
 
@@ -105,9 +101,9 @@ hrelsa <-
       namen              <- names(delta)
 
 
-      # hRELSA wf calculcation --------------------------------------------------
+      # PVS wf calculation --------------------------------------------------
 
-      # Weighting the relsa score by knowing the extreme values
+      # Weighting the PVS score by knowing the extreme values
       # from the baseline function
       wfactor   <- NULL
       for (r in 1:dim(delta)[1]) {
@@ -133,19 +129,19 @@ hrelsa <-
 
       # Kill NaN weights
       if (length(wf) > 0) {
-        wf[is.nan(wf)] <- relsaNA
+        wf[is.nan(wf)] <- pvsNA
       } else{
 
       }
 
-      # Kill neagative weights
-      wf[wf < 0]        <- relsaNA
+      # Kill negative weights
+      wf[wf < 0]        <- pvsNA
 
       # Get NA positions for rms correction
       na.idx           <- is.na(wf)
 
 
-      # hRELSA rms calculcation -------------------------------------------------
+      # PVS rms calculcation -------------------------------------------------
       # rms calculation works the following way:
       # calculate each wfactor value like this: square root of (x^2)
       # form the average of this each day
@@ -170,24 +166,24 @@ hrelsa <-
 
       }
 
-      # finalizing hRELSA results -----------------------------------------------
+      # finalizing PVS results -----------------------------------------------
 
-      relsa_3            <- NULL
-      relsa_3            <- round(wfactor , 2)
-      relsa_3            <- as.data.frame(relsa_3)
-      relsa_3            <- cbind(relsa_3, wf)
-      relsa_3            <- cbind(time, relsa_3)
+      pvs_3            <- NULL
+      pvs_3            <- round(wfactor , 2)
+      pvs_3            <- as.data.frame(pvs_3)
+      pvs_3            <- cbind(pvs_3, wf)
+      pvs_3            <- cbind(time, pvs_3)
 
       if (all(is.na(rms)) == TRUE) {
-        relsa_3$rms      <- as.numeric(unlist(rms))
+        pvs_3$rms      <- as.numeric(unlist(rms))
       } else{
-        relsa_3$rms      <- round(rms, 2)
+        pvs_3$rms      <- round(rms, 2)
       }
 
       vars  <- names(subdata)[!(names(subdata) %in% "time")]
 
       ret <- list(delta = delta,
-                  relsa = relsa_3,
+                  pvs = pvs_3,
                   testVars = vars)
     }
     return(ret)

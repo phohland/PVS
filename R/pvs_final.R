@@ -1,35 +1,30 @@
-#' Relative Severity Assessment Score for Humans
-#' = hRELSA
+#' PVS
 #'
-#' The \code{hrelsa_final} function calculates a composite relative severity score
-#' based on normalized differences. Further, the values are regularized with a
-#' reference set to estimate relative severity.
-#' This is just the function to perform hRELSA on all patients.
-#' The main function is hRELSA.
+#' The \code{pvs_final} applies the PVS code on the whole data set
 #'
 #' @param pre normalized data set
-#' @param bsl data set baseline
-#' @param drop variables which shall not used for hRELSA
+#' @param bsl baseline
+#' @param drop variables which shall not used for PVS
 #' @param turnvars variables with "turned" direction
 #' @param zvars z variables
 #' @param ambivars ambivalent variables
-#' @param relsaNA code how to handle NaN values during calculations
+#' @param pvsNA code how to handle NaN values during calculations
 #' (default is NA)
 #'
-#' @return \code{final} list with hRELSA results for all patients
-#' (differences and weights plus hRELSA score)
+#' @return \code{final} list with PVS results for all patients
+#' (differences and weights plus PVS score)
 #'
 #' @export
 #'
 
-hrelsa_final <-
+pvs_final <-
   function(pre,
            bsl,
            drop = NULL,
            turnvars = NULL,
            ambivars = NULL,
            zvars = NULL,
-           relsaNA = NA) {
+           pvsNA = NA) {
     # Searching for errors ----------------------------------------------------
 
     abort <- FALSE
@@ -49,7 +44,7 @@ hrelsa_final <-
 
     } else {
       for (i in 1:length(unique(pre$id))) {
-        RELSA        <- hrelsa(
+        PVS        <- pvs(
           pre = pre,
           bsl,
           a = i,
@@ -57,20 +52,20 @@ hrelsa_final <-
           turnvars = turnvars,
           ambivars = ambivars,
           zvars = zvars,
-          relsaNA = relsaNA
-        )$relsa
+          pvsNA = pvsNA
+        )$pvs
 
         d1 <- (unique(pre$id))[i]
         d2 <- pre %>% filter(id == d1)
 
-        RELSA <- data.frame(
+        PVS <- data.frame(
           id = d2$id,
           id2 = i,
           treatment = d2$treatment,
           condition = d2$condition,
-          RELSA
+          PVS
         )
-        final <- rbind(final, RELSA)
+        final <- rbind(final, PVS)
         final <- as_tibble(final)
       }
     }

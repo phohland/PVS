@@ -1,17 +1,17 @@
-#' Evaluates a analysis of the hRELSAed data set
+#' PVS
 #'
-#' The \code{hrelsa_analysis} evaluates relevant informations about the patients
+#' The \code{pvs_analysis} evaluates relevant information about the patients
 #' with the highest severity
 #'
-#' @param set hRELSAed data set (by hrelsa_final)
+#' @param set data set with PVS values (by pvs_final)
 #'
-#' @return \code{analysis} Outputs some basic data set informations, and the
+#' @return \code{analysis} basic data set information, and the
 #' analysis of wfactor, wf and rms
 #'
 #' @export
 #'
 
-hrelsa_analysis <- function(set) {
+pvs_analysis <- function(set) {
   # Searching for errors ----------------------------------------------------
 
   abort <- FALSE

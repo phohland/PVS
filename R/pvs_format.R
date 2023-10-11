@@ -1,23 +1,21 @@
-#' Formats the data set for hRELSA calculation
+#' PVS
 #'
-#' The \code{hrelsa_format} renames and rearranges the columns to
-#' work with properly
+#' The \code{pvs_format} formats the data
 #'
 #' @param dat data set
 #' @param id id variable
 #' @param treatment treatment variable
 #' @param condition condition variable
 #' @param time time variable
-#' @param vars variables to work with
-#' @param included_realtime variable of realtime variable when needed
+#' @param vars variables
+#' @param included_realtime variable of real time variable when needed
 #'
-#' @return \code{dat} data set rearranged,
-#' just with needed and with properly named columns
+#' @return \code{dat} formatted data set
 #'
 #' @export
 #'
 
-hrelsa_format <-
+pvs_format <-
   function (dat,
             id = NULL,
             treatment = NULL,

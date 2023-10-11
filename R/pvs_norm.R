@@ -1,14 +1,15 @@
-#' Normalizes the data set for hRELSA calculation
+#' PVS
 #'
-#' The \code{hrelsa_norm} function normalizes defined variables to 100 %
+#' The \code{pvs_norm} function normalizes defined variables to 100 %
 #' at a given time point
+#'
 #' when z variables are involved they have a special way of being normalized
 #' z_norm = (|z| + 1) * 100
 #' when normalizing z variables the reference time point does not matter
 #' baseline for z variables is 0 (0 <- 100 %)
 #'
 #' @param set data set
-#' @param normthese variable names in the data set that shall be normalized
+#' @param normthese variables in the data set that shall be normalized
 #' @param zvars z variables (need to be contained in normthese as well)
 #' @param ambivars ambivalent variables
 #' @param ontime unique reference time point in data set (e.g. 1 for day 1)
@@ -18,7 +19,7 @@
 #' @export
 #'
 
-hrelsa_norm <-
+pvs_norm <-
   function(set,
            normthese = NULL,
            zvars = NULL,

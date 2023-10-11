@@ -1,12 +1,12 @@
-#' Forms dates to days for hRELSA calculation
+#' PVS
 #'
-#' The \code{hrelsa_days} function transforms dates into days as integer
+#' The \code{pvs_days} function transforms dates into days as integer
 #' either with the first date of each patient as day 1
 #' or with the first date of the whole data set as day 1
-#' a day column will be added
 #'
 #' @param raw data set
-#' @param format either "day", "year" or "timecode" (a transformation to years is possible as well)
+#' @param format either "day", "year" or "timecode"
+#' (a transformation to years is possible as well)
 #' @param formthis date variable
 #' @param newdayone for each patient a day 1? (TRUE/FALSE)
 #'
@@ -15,7 +15,7 @@
 #' @export
 #'
 
-hrelsa_days <- function (raw,
+pvs_days <- function (raw,
                          format = "day",
                          date_format = "%d%b%Y",
                          formthis = NULL,

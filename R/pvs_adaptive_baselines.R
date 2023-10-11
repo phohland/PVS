@@ -1,15 +1,14 @@
-#' Defines baselines and maximum severity values for hRELSA calculation using
-#' the adaptive reference method
-#' Here is the normalization included as well
+#' PVS
 #'
-#' The \code{hrelsa_adaptive_baselines} function normalizes the data,
+#' The \code{pvs_adaptive_baselines} function normalizes the data,
 #' calculates baselines, maximum severity, maximum delta and some characteristics
+#' for data using the adaptive reference method
 #'
-#' @param dat formatted data set
-#' @param vars variables to work with
+#' @param dat data set
+#' @param vars variables
 #' @param turnvars turned variables
 #' @param ambivars ambivalent variables
-#' @param realtime the real time point for age calculcation, the real time needs to be included in dat
+#' @param realtime the real time point for age calculation, the real time needs to be included in dat
 #' @param dob_dat data with date of birth in it
 #' @param dob_data_id_col column id of id in dob data set
 #' @param dob_data_dob_col column id of date of birth in dob data set
@@ -22,7 +21,7 @@
 #' @export
 #'
 
-hrelsa_adaptive_baselines <-
+pvs_adaptive_baselines <-
   function(dat,
            reference_dat,
            vars = NULL,

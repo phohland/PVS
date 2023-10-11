@@ -1,15 +1,13 @@
-#' Defines baselines and maximum severity values for hRELSA calculation
+#' PVS
 #'
-#' The \code{hrelsa_baselines} function calculates baselines, maximum severity,
+#' The \code{pvs_baselines} function calculates baselines, maximum severity,
 #' maximum delta and some characteristics
 #'
 #' @param pre normalized data set
 #' @param bslday time point in the data set used for baseline calculation
-#' (i.e. day=-1) (not needed with just z variables)
 #' @param vars variables to use as references
 #' @param turnvars variables with "turned" direction
-#' (e.g. c("hr","temp")) (not needed with just z variables)
-#' @param zvars z variables (SDS variables)
+#' @param zvars z variables
 #' @param ambivars ambivalent variables
 #'
 #' @return \code{ret} list with reference variables set to 100 %,
@@ -18,7 +16,7 @@
 #' @export
 #'
 
-hrelsa_baselines <-
+pvs_baselines <-
   function(pre,
            bslday = NULL,
            vars = NULL,
