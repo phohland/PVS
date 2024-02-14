@@ -61,8 +61,8 @@ pvs_final <-
         PVS <- data.frame(
           id = d2$id,
           id2 = i,
-          treatment = d2$treatment,
-          condition = d2$condition,
+          treatment = if (is.null(d2$treatment)) {NA} else {d2$treatment},
+          condition = if (is.null(d2$condition)) {NA} else {d2$condition},
           PVS
         )
         final <- rbind(final, PVS)

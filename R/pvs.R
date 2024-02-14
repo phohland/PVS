@@ -114,6 +114,9 @@ pvs <-
       # Set all negative values to NA
       wfactor[wfactor < 0] <- NA
 
+      # Set all NaN values to 0 (new)
+      #wfactor <- as.data.frame(lapply(wfactor, function(x) ifelse(is.nan(x), 0, x)))
+
       # wf calculation works the following way:
       # form the average of the wfactors of each day
       if (is.null(dim(wfactor))) {

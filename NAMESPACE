@@ -2,6 +2,8 @@
 
 export(pvs)
 export(pvs_adaptive_baselines)
+export(pvs_adaptive_baselines_range)
+export(pvs_adaptive_baselines_sex)
 export(pvs_analysis)
 export(pvs_baselines)
 export(pvs_days)
